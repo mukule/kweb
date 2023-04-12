@@ -1,0 +1,28 @@
+html, body {
+
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to top right, #e81809, #180203 70%);
+}
+
+.form-control {
+  height: 50px; /* Change this value to adjust the height */
+  font-size: 1.2rem; /* Increase the font size for better readability */
+  height: 40px;
+  font-size: 1.2rem;
+  width: 70%; /* Reduce the width of the input fields */
+  margin: auto; /* Center the input fields */
+  text-align: center; /* Center the placeholder text */
+  border-radius: 50px;
+}
+.fa-5x {
+  font-size: 5em; /* Increase the size of the user icon */
+}
+.no-style {
+  border: none;
+}
+
+.no-style a {
+  text-decoration: none;
+  color: white;
+}

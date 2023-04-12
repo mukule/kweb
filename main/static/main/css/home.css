@@ -1,0 +1,41 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow: hidden;
+}
+.bg-image {
+  background: url("/static/main/images/bg-image.jpg");
+  background-size: cover;
+  background-position: center;
+   /* add a little darkness */
+   fill-opacity: 7px;
+  height: 100%;
+ 
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.circle {
+  background-color: white;
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.circle img {
+  max-width: 100%;
+  max-height: 100%;
+}
+

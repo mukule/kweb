@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            {{ form.event_date.label_tag }}
+            {{ form.event_date }}
+        </div>
+        <div class="form-group">
+            {{ form.location.label_tag }}
+            {{ form.location }}
+        </div>
+        <div class="form-group">
+            {{ form.image.label_tag }}
+            {{ form.image }}
+        </div>
+        <button type="submit" class="btn btn-info">Create</button>
+      </form>
+</div>
+
+{% endblock content %}
+

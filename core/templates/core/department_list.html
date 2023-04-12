@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container ">
+    <div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>Departments</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            {% for department in departments %}
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">
+                            {{ department.name }} Department
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Heade of Department: {{ department.hod }}</li>
+                            <li class="list-group-item">Total Number of staff: {{ department.staff_count }} </li>
+                            <li class="list-group-item">{{  department.description }}</li>
+                            <a href="{% url 'core:departmentdetail' pk=department.pk %}">Department Members</a>
+                           
+                          </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        </div>
+</div>
+
+
+{% endblock content %}
+

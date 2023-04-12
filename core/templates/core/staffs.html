@@ -1,0 +1,85 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>{{ staffs.user.first_name }} {{ staffs.user.last_name }} Professional Profile</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Members of The Department</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="animated fadeIn">
+        <!-- Widgets  -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                       <h5>Start Date</h5>
+                       <hr>
+                       <strong>{{ staffs.start_date }}</strong>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                       <h5>Last perfomance review</h5>
+                       <hr>
+                       <strong>{{ staffs.last_performance_review }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                       <h5>certifications</h5>
+                       <hr>
+                       <strong>{{ staffs.certifications }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5>Skills</h5>
+                        <hr>
+                        <strong>{{ staffs.skills }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <img class="user-avatar" src="{{ staffs.user.image.url }}" alt="User Avatar">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">other details</div>
+            </div>
+        </div>
+</div>
+{% endblock content %}
+

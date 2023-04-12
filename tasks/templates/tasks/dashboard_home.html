@@ -1,0 +1,111 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-6">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Welcome to Your Homepage {{ user.username }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">We make it Happen Because we Believe in it, Cheers</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+  {% if notifications %}
+  <div class="alert alert-info text-center" role="alert">
+      {% for notification in notifications %}
+          <div class="notification{% if notification.read %} notification-read{% endif %}">
+            <a href="{% url 'tasks:task_detail' pk=notification.task_id %}">
+              {{ notification.message }}
+          </a>
+          </div>
+      {% endfor %}
+  </div>
+  {% endif %}
+  
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="text-center mb-2">All tasks</h4>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+    <tr>
+      <td>{{ task.name }}</td>
+      <td>{{ task.get_priority_display }}</td>
+      <td>{{ task.due_date }}</td>
+      <td>{{ task.get_status_display }}</td>
+      <td>
+        {% if task in assigned_tasks %}
+        <div class="alert alert-primary text-center" role="alert">
+          <a href="{% url 'tasks:task_detail' pk=task.pk %}">Assigned</a>
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">No tasks to display</td>
+    </tr>
+    {% endfor %}
+                  </tbody>
+              </table>
+        </div>
+        <!-- <div class="col-sm-6 bg-light">
+            <h4 class="text-center mb-2">Tasks assigned to Me</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Priority</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                        {% for task in assigned_tasks %}
+                            <tr>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.get_priority_display }}</td>
+                                <td>{{ task.due_date }}</td>
+                                <td>{{ task.get_status_display }}</td>
+                            </tr>
+                        {% endfor %}
+                   
+                 
+                
+              </table>
+        </div> -->
+      </div>
+      <!-- tasks/dashboard_home.html -->
+
+
+
+</div>
+
+{% endblock content %}
+

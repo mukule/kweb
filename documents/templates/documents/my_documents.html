@@ -1,0 +1,43 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>{{ user.username }}'s Documents</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="{% url 'documents:staff_doc_create' %}">Upload Document</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    {% for document in documents %}
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <h2>{{ document.title }}</h2>
+            <p>{{ document.description }}</p>
+            <i class="fa fa-file-pdf-o text-danger"></i>
+            <a href="{{ document.file.url }}" download>Download</a>
+        </li>
+    </ul>
+{% empty %}
+    <p>No documents found.</p>
+{% endfor %}
+
+</div>
+{% endblock content %}
+

@@ -1,0 +1,60 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>{{ departments.name }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Members of The Department</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Job Function</th>
+            <th scope="col">Contact Manager</th>
+            <th scope="col">Status</th>
+            <th scope="col">Telephone</th>
+            <th scope="col">Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for staff_member in departments.staff.all %}
+          <tr>
+            <td><a href="{% url 'core:staffdetail' pk=staff_member.pk %}">{{ staff_member.user.first_name }} {{ staff_member.user.last_name }}</a></td>
+            <td>{{ staff_member.user.job_function }}</td>
+            <td>{{ staff_member.user.contact_manager }}</td>
+            <td>{{ staff_member.user.status }}</td>
+            <td>{{ staff_member.telephone }}</td>
+            <td>{{ staff_member.user.phone }}</td>
+          </tr>
+          {% empty %}
+      No staff members found
+    {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+  
+
+{% endblock content %}
+

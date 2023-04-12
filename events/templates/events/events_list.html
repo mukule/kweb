@@ -1,0 +1,121 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Events</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="{% url 'events:create_event' %}">Create Event</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    {% if main_event %}
+    <div class="event main-event">
+       
+        <div class="card text-center">
+            <img src="{{ main_event.image.url }}" style="height: 250px; max-width: 100%;" alt="{{ event.name }}">
+            <div class="card-img-overlay d-flex flex-column">
+               
+              <main-event class="card-title mt-auto text-white">
+                
+                <h2><strong>{{ main_event.name }}</strong></h2>
+                <p class="text-white"><strong>Date: {{ main_event.event_date }} || Venue: {{ main_event.location }}</strong></p>
+              </main-event>
+            </div>
+          </div>
+    </div>
+{% endif %}
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Events happening Today</h4>
+                <hr>
+                {% if today_events %}
+                    <ul class="list-group list-group-flush">
+                        {% for event in today_events %}
+                        <li class="list-group-item">{{ event.name }} <br>
+                                
+                            <a href="{% url 'events:event_detail' pk=event.pk %}" class="btn btn-info position-relative">
+                                <i class="far fa-calendar-alt me-2"></i>{{ event.event_date }}
+                            </a>
+                            
+
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No events today.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Upcoming Events</h4>
+                <hr>
+                {% if upcoming_events %}
+                    <ul class="list-group list-group-flush">
+                        {% for event in upcoming_events %}
+                        <li class="list-group-item">{{ event.name }} <br>
+                                
+                            <a href="{% url 'events:event_detail' pk=event.pk %}" class="btn btn-info position-relative">
+                                <i class="far fa-calendar-alt me-2"></i>{{ event.event_date }}
+                            </a>
+                            
+
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No upcoming events.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Passed Events</h4>
+                <hr>
+                {% if past_events %}
+                    <ul class="list-group list-group-flush">
+                        {% for event in past_events %}
+                            <li class="list-group-item">{{ event.name }} <br>
+                                
+                                <a href="{% url 'events:event_detail' pk=event.pk %}" class="btn btn-info position-relative">
+                                    <i class="far fa-calendar-alt me-2"></i>{{ event.event_date }}
+                                </a>
+                                
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No past events.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock content %}
+
