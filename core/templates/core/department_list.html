@@ -19,27 +19,24 @@
     <div class="content">
         <div class="row">
             {% for department in departments %}
-            <div class="col-6">
+            <div class="col-md-6 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">
-                            {{ department.name }} Department
-                        </strong>
+                        <strong class="card-title">{{ department.name }} Department</strong>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Heade of Department: {{ department.hod }}</li>
-                            <li class="list-group-item">Total Number of staff: {{ department.staff_count }} </li>
-                            <li class="list-group-item">{{  department.description }}</li>
+                            <li class="list-group-item">Head of Department: {{ department.hod }}</li>
+                            <li class="list-group-item">Total Number of staff: {{ department.staff_count }}</li>
+                            <li class="list-group-item">{{ department.description }}</li>
                             <a href="{% url 'core:departmentdetail' pk=department.pk %}">Department Members</a>
-                           
-                          </ul>
+                        </ul>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        </div>
+        
 </div>
 
 

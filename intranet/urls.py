@@ -33,6 +33,8 @@ urlpatterns = [
     path("events/", include('events.urls', namespace='events')),
     path("tasks/", include('tasks.urls', namespace='tasks')),
     path("documents/", include('documents.urls', namespace='documents')),
+    path("applications", include('applications.urls', namespace='applications')),
+    path("facilities", include('facilities.urls', namespace='facilities')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

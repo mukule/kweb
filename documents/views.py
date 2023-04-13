@@ -1,12 +1,14 @@
 from django.views.generic import ListView
 from .models import CompanyDocument
 from django.core.paginator import Paginator
-  
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from .models import StaffDocument
 from .forms import StaffDocumentForm
+from django.contrib import messages
+
 
 class Company_doc(ListView):
     model = CompanyDocument
@@ -27,7 +29,6 @@ class StaffDocumentCreateView(LoginRequiredMixin, CreateView):
     model = StaffDocument
     form_class = StaffDocumentForm
     template_name = 'documents/staff_doc_create.html'
-    success_url = reverse_lazy('documents:my_docs')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -36,6 +37,14 @@ class StaffDocumentCreateView(LoginRequiredMixin, CreateView):
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Your document has been uploaded successfully!')
+        return response
+
+    def get_success_url(self):
+        return reverse('documents:my_docs')
     
 class MyDocuments(LoginRequiredMixin, ListView):
     model = StaffDocument

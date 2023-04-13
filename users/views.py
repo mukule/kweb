@@ -23,7 +23,7 @@ def register(request):
             user = form.save()
             login(request, user)
             messages.success(request, f"New account created: {user.username}")
-            return redirect('/')
+            return redirect('login')
 
         else:
             for error in list(form.errors.values()):

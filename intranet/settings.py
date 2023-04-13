@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'tasks',
     'notifications',
     'documents',
+    'applications',
+    'facilities',
     
     
     
