@@ -16,7 +16,7 @@
               <div class="page-header float-right">
                   <div class="page-title">
                       <ol class="breadcrumb text-right">
-                          <li><a href="#">We make it Happen Because we Believe in it, Cheers</a></li>
+                          <li><a href="{% url 'facilities:book_facility' pk=facility.id %}">Book in advance for use</a></li>
                       </ol>
                   </div>
               </div>
@@ -25,6 +25,20 @@
   </div>
 </div>
 <div class="content">
-   details
+    <div class="col-lg-12">
+        <div class="card">
+            {% if facility.image %}
+                <img class="card-img-top" src="{{ facility.image.url }}" alt="{{ facility.name }} image" style="height: 250px; max-width: 100%;">
+                {% else %}
+                <img class="card-img-top" src="{% static 'facilities/images/default.jpg' %}" alt="No image available" style="height: 250px; max-width: 100%;">
+                {% endif %}
+            <div class="card-body">
+       {{ facility.description|striptags }}
+            </div>
+           
+        </div>
+
+    </div>
+</div>
 </div>
 {% endblock content %}

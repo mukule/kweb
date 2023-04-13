@@ -1,11 +1,27 @@
-from django.db import models
-from django.contrib.auth.models import User
+from django import forms
+from .models import Booking
 
-class Facility(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    capacity = models.IntegerField()
-    image = models.ImageField(upload_to='facilities/', blank=True, null=True)  # new field
+class BookingForm(forms.ModelForm):
+    purpose = forms.CharField(
+        label='Purpose',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    start_time = forms.DateTimeField(
+        label='Start Time',
+        widget=forms.DateTimeInput(attrs={'class': 'form-control datetimepicker'})
+    )
+    end_time = forms.DateTimeField(
+        label='End Time',
+        widget=forms.DateTimeInput(attrs={'class': 'form-control datetimepicker'})
+    )
 
-    def __str__(self):
-        return self.name
+    class Meta:
+        model = Booking
+        fields = ['purpose', 'start_time', 'end_time']
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get('start_time')
+        end_time = cleaned_data.get('end_time')
+        if start_time and end_time and start_time >= end_time:
+            raise forms.ValidationError('The end time must be after the start time.')

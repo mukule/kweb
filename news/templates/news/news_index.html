@@ -40,8 +40,8 @@
         <small class="text-muted">{{ news.author }}   {{ news.date_posted }}</small>
       </div>
       <div>
-       <news>
-        {{ news.content|truncatewords_html:50 }}
+       <news>news.content|striptags
+        {{ news.content|striptags|truncatewords_html:50 }}
        </news>
        <br>
         {% if news.content|wordcount > 15 %}
