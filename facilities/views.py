@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from .forms import BookingForm
 from .models import Booking
+from django.shortcuts import get_object_or_404
 
 
 class FacilityListView(ListView):
@@ -18,6 +19,7 @@ class FacilityDetailView(DetailView):
 
 
 def book_facility(request, facility_id):
+    facility = get_object_or_404(Facility, pk=facility_id)
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
@@ -44,7 +46,13 @@ def book_facility(request, facility_id):
             return redirect('booking_success')
     else:
         form = BookingForm()
-    return render(request, 'facilities/booking.html', {'form': form})
-
+        now = timezone.now()
+        bookings = Booking.objects.filter(facility_id=facility_id,date__gte=now.date(),date__lte=now.date(),end_time__gte=now.time()).order_by('date', 'start_time')
+    if bookings.exists():
+        context = {'form': form, 'facility': facility, 'bookings': bookings}
+        return render(request, 'facilities/booking.html', context)
+    else:
+        context = {'form': form, 'facility': facility}
+        return render(request, 'facilities/booking.html', context)
 def booking_success(request):
     return render(request, 'facilities/booking_success.html')
