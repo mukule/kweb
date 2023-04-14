@@ -45,3 +45,6 @@ def book_facility(request, facility_id):
     else:
         form = BookingForm()
     return render(request, 'facilities/booking.html', {'form': form})
+
+def booking_success(request):
+    return render(request, 'facilities/booking_success.html')

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'documents',
     'applications',
     'facilities',
+    'bootstrap_datepicker_plus',
     
     
     

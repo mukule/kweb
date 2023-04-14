@@ -2,6 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+
 <div class="breadcrumbs">
   <div class="breadcrumbs-inner">
       <div class="row m-0">
@@ -17,11 +18,33 @@
 </div>
 <div class="content">
     <form method="POST">
+        {{ form.media }}
+
         {% csrf_token %}
         <input type="hidden" name="facility" value="{{ facility_id }}">
-        {{ form.as_p }}
+        <div class="form-group">
+            {{ form.purpose.label_tag }}
+            {{ form.purpose }}
+            {{ form.purpose.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.date.label_tag }}
+            {{ form.date }}
+            {{ form.date.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.start_time.label_tag }}
+            {{ form.start_time }}
+            {{ form.start_time.errors }}
+        </div>
+        <div class="form-group">
+            {{ form.end_time.label_tag }}
+            {{ form.end_time }}
+            {{ form.end_time.errors }}
+        </div>
         <button type="submit" class="btn btn-primary">Book Facility</button>
-      </form>
+    </form>
+    
       
 </div>
 {% endblock content %}
