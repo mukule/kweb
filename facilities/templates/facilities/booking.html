@@ -75,10 +75,19 @@
                 <div class="p-3">
                     <ul class="list-group list-group-flush">
                         {% for booking in bookings %}
-                            <li class="list-group-item">{{ booking.date }} - {{ booking.start_time|time:"H:i" }} to {{ booking.end_time|time:"H:i" }}</li>
+                        <li class="list-group-item">Booked by {{ booking.user.get_username }} on {{ booking.date }} from {{ booking.start_time|time:"H:i" }} to {{ booking.end_time|time:"H:i" }}</li>
+
                         {% endfor %}
                     </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-6 col-12">
+        <div class="card">
+            <div class="card-header alert alert-primary text-center" role="alert">
+                <strong class="card-title text-danger">The {{ facility.name }} is available for booking</strong>
             </div>
         </div>
     </div>

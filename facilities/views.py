@@ -38,21 +38,34 @@ def book_facility(request, facility_id):
                     return render(request, 'facilities/booking.html', {'form': form})
             
             # Check if the start time is not in the past
-            if booking.start_time < timezone.now().time():
+            if booking.date < timezone.now().date():
+                form.add_error('date', 'The booking date cannot be in the past.')
+                return render(request, 'facilities/booking.html', {'form': form})
+            if booking.date == timezone.now().date() and booking.start_time < timezone.now().time():
                 form.add_error('start_time', 'The start time cannot be in the past.')
                 return render(request, 'facilities/booking.html', {'form': form})
 
             booking.save()
-            return redirect('booking_success')
+            request.session['booking_id'] = booking.id
+            return redirect('facilities:booking_success')
     else:
         form = BookingForm()
         now = timezone.now()
-        bookings = Booking.objects.filter(facility_id=facility_id,date__gte=now.date(),date__lte=now.date(),end_time__gte=now.time()).order_by('date', 'start_time')
+        bookings = Booking.objects.filter(facility_id=facility_id).order_by('date', 'start_time')
+
     if bookings.exists():
         context = {'form': form, 'facility': facility, 'bookings': bookings}
         return render(request, 'facilities/booking.html', context)
     else:
         context = {'form': form, 'facility': facility}
         return render(request, 'facilities/booking.html', context)
+    
+    
 def booking_success(request):
-    return render(request, 'facilities/booking_success.html')
+    booking_id = request.session.get('booking_id')
+    if booking_id:
+        booking = Booking.objects.get(id=booking_id)
+        context = {'booking': booking}
+        return render(request, 'facilities/booking_success.html', context)
+    else:
+        return redirect('facilities:book_facility', facility_id=booking.facility_id)
