@@ -2089,7 +2089,8 @@ header .form-inline {
 
 /* Footer */
 footer.site-footer {
-  padding: 0 1.875em; }
+  padding: 0 1.875em;
+ }
   footer.site-footer .footer-inner {
     color: #78909c;
     font-family: 'Open Sans';

@@ -6,6 +6,8 @@ from django.utils import timezone
 from .forms import BookingForm
 from .models import Booking
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
 
 
 class FacilityListView(ListView):
@@ -34,8 +36,9 @@ def book_facility(request, facility_id):
                     booked.start_time <= booking.end_time <= booked.end_time or
                     booking.start_time <= booked.start_time and booking.end_time >= booked.end_time):
                     facility_name = booked.facility.name
-                    form.add_error('start_time', f'The {facility_name} is already booked for this time.')
-                    return render(request, 'facilities/booking.html', {'form': form})
+                    facility_name = booked.facility.name
+                    messages.error(request, f'The {facility_name} is already booked for this time.')
+                    return render(request, 'facilities/booking.html', {'form': form, 'facility': booked.facility})
             
             # Check if the start time is not in the past
             if booking.date < timezone.now().date():
@@ -51,7 +54,8 @@ def book_facility(request, facility_id):
     else:
         form = BookingForm()
         now = timezone.now()
-        bookings = Booking.objects.filter(facility_id=facility_id).order_by('date', 'start_time')
+        bookings = Booking.objects.filter(facility_id=facility_id, date__gte=now.date()).order_by('date', 'start_time')
+
 
     if bookings.exists():
         context = {'form': form, 'facility': facility, 'bookings': bookings}

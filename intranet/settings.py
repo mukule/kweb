@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'applications',
     'facilities',
     'bootstrap_datepicker_plus',
+    'messaging',
     
     
     
