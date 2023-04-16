@@ -7,9 +7,10 @@
                     Copyright &copy; Kenyaweb
                 </div>
                 <div class="col-sm-6 text-right">
-                    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#users-collapse" aria-expanded="false" aria-controls="users-collapse">
-                        <i class="fa fa-envelope"></i>  Send Message
-                    </button>
+                    <a href="{% url 'messaging:send_message' %}" class="btn btn-success text-white">
+                        <i class="fa fa-envelope"></i> Send Message
+                    </a>
+                    
                     
                 </div>
             </div>

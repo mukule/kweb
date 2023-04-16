@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content">
+    <div class="col-lg-8 justify-content-center">
+        <div class="card" style="width: 100%;" >
+          <div class="card-body">
+            <h4 class="card-title box-title card-header"> <img class="user-avatar rounded-circle mr-2" src="{{ sender.image.url }}" alt="Profile Picture" width="40" height="40">  {{ sender.username }}</h4>
+            <div class="card-content">
+              <div class="messenger-box">
+                <ul>
+                  {% for msg in messages %}
+                  <li class="message {% if msg.sender == request.user %}out{% else %}in{% endif %}">
+                    <div class="msg-received msg-container">
+                      <div class="avatar">
+                        <img class="user-avatar rounded-circle mr-2" src="{{ msg.sender.image.url }}" alt="Profile Picture" width="40" height="40">
+                        <div class="send-time">{{ msg.timestamp|date:'F j, Y, g:i a' }}</div>
+                      </div>
+                      <div class="msg-box">
+                        <div class="inner-box">
+                          <div class="name">{{ sender.username }}</div>
+                          <div class="meg">{{ msg.body }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  {% endfor %}
+                </ul>
+                <div class="send-mgs">
+                  <div class="yourmsg">
+                    <form method="post">
+                      {% csrf_token %}
+                      {{ reply_form.as_p }}
+                      <button class="text-success btn msg-send-btn" type="submit"><i class="pe-7s-paper-plane text-white"></i></button>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- /.messenger-box -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+</div>
+{% endblock content %}

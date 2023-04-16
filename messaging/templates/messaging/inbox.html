@@ -1,0 +1,34 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content">
+    {% if grouped_messages %}
+    {% for group in grouped_messages %}
+        <a href="{% url 'messaging:message_detail' message_id=group.last_message.id %}">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="sender-info d-flex align-items-center">
+                        <img class="user-avatar rounded-circle mr-2" src="{{ group.last_message.sender.image.url }}" alt="Profile Picture" width="40" height="40">
+                        <div>
+                            <h4 class="mb-0">{{ group.sender.username }}</h4>
+                            <p class="mb-0">{{ group.last_message.body }}</p>
+                        </div>
+                    </div>
+                    <span class="badge badge-success badge-pill">{{ group.count }}</span>
+                </li>
+            </ul>  
+        </a>
+    {% endfor %}
+{% else %}
+    <p>No messages found.</p>
+{% endif %}
+
+
+
+
+
+
+</div>
+{% endblock content %}

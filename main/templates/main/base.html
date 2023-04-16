@@ -34,6 +34,91 @@
 
     <!-- Jquery JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .message-list {
+          display: flex;
+          flex-direction: column;
+        }
+        
+        .message {
+          margin-bottom: 10px;
+          display: flex;
+          flex-direction: row;
+        }
+        
+        .in {
+          justify-content: flex-start;
+        }
+        
+        .out {
+          justify-content: flex-end;
+        }
+        
+        .message-text {
+          max-width: 60%;
+          padding: 5px 10px;
+          border-radius: 5px;
+          background-color: #eee;
+          word-wrap: break-word;
+        }
+        
+        .message-text p {
+          margin: 0;
+        }
+        
+        .date {
+          font-size: 12px;
+          margin-left: 10px;
+        }
+        
+        .reply-form {
+          margin-top: 20px;
+        }
+        
+        .reply-form h2 {
+          margin-bottom: 10px;
+        }
+        
+        .reply-form form {
+          display: flex;
+          flex-direction: column;
+        }
+        
+        .reply-form label {
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        
+        .reply-form input[type="text"],
+        .reply-form textarea {
+          padding: 5px;
+          margin-bottom: 10px;
+        }
+        
+        .reply-form button[type="submit"] {
+          padding: 5px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        .reply-form button[type="submit"]:hover {
+          background-color: #00d950;
+        }
+        .reply-form textarea {
+        height: 150px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        resize: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+        </style>
+        
     
 
 </head>
