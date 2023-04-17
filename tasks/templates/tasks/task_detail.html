@@ -15,9 +15,16 @@
             <div class="col-sm-6">
                 <div class="page-header float-right">
                     <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="#">Update task status</a></li>
-                        </ol>
+                        <form method="post" action="{% url 'tasks:task_status_update' pk=object.pk %}" class="form-inline">
+                            {% csrf_token %}
+                            <div class="form-group">
+                              {{ form.status }}
+                            </div>
+                            <div class="form-group ml-2">
+                              <button type="submit" class="btn btn-outline-secondary">Update Status</button>
+                            </div>
+                          </form>
+                          
                     </div>
                 </div>
             </div>
@@ -48,21 +55,13 @@
                    </p>
                   </div>
                   <div class="col">
-                   <p>
-                    assignment Due date: {{ task.due_date }}
-                   </p>
-
+                    <p>Assignment due date: {{ task.due_date }}</p>
                   </div>
                 </div>
+                <div class="alert alert-primary" role="alert">
+                    {{ due_message }}
+                  </div>
               </div>
-              <hr>
-              <h4>Update Assignment Status</h4>
-              <form method="post" class="mt-2">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-primary">Update</button>
-              </form>
-              <a href="{% url 'tasks:task_status_update' pk=task.pk %}">Update task status</a>
 
            </div>
         </div>

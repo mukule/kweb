@@ -5,6 +5,8 @@ from notifications.models import Notification
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TaskUpdateForm
 from django.contrib.auth.decorators import login_required
+from datetime import date
+
 
 
 
@@ -27,26 +29,32 @@ class TaskListView(LoginRequiredMixin, ListView):
         context['assigned_tasks'] = assigned_tasks
         context['notifications'] = notifications
         return context
-    
+   
+
+
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
 
-    def get(self, request, *args, **kwargs):
-        response = super().get(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = TaskUpdateForm(instance=self.object)
+        
+        # Calculate number of days before due date
+        today = date.today()
+        due_date = self.object.due_date
+        days_before_due = (due_date - today).days
 
-        # Mark associated notification as read
-        user = request.user
-        task = self.get_object()
-        notification = Notification.objects.filter(user=user, task=task).first()
-        if notification:
-            notification.read = True
-            notification.save()
+        # Check whether task is due today or has passed
+        if due_date == today:
+            context['due_message'] = "This task is due today!"
+        elif due_date < today:
+            context['due_message'] = "This task is past due!"
+        else:
+            context['due_message'] = f"This task is due in {days_before_due} days."
+        
+        return context
 
-            # Dismiss associated notification
-            notification.delete()
-
-        return response
 
 @login_required
 def update_task_status(request, pk):
