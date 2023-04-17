@@ -16,7 +16,7 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li><a href="#">We make it Happen Because we Believe in it, Cheers</a></li>
+                            <li><a href="#">Update task status</a></li>
                         </ol>
                     </div>
                 </div>
@@ -55,6 +55,15 @@
                   </div>
                 </div>
               </div>
+              <hr>
+              <h4>Update Assignment Status</h4>
+              <form method="post" class="mt-2">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+              <a href="{% url 'tasks:task_status_update' pk=task.pk %}">Update task status</a>
+
            </div>
         </div>
     </div><!-- /# column -->
@@ -63,4 +72,3 @@
 </div>
 
 {% endblock content %}
-
