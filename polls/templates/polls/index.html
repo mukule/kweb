@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-6">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Opinion Polls</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    {% if latest_poll_list %}
+   
+        <ul class="list-group">
+            {% for poll in latest_poll_list %}
+            <div class="card mb-2">
+                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="">
+                    {{ poll.question }}</a> published on {{ poll.pub_date|date:'M d, Y' }} || Ends on {{ poll.end_date|date:'M d, Y' }}</li>
+                </div>
+            {% endfor %}
+            </ul>
+{% else %}
+    <p>There are no active polls at the moment.</p>
+{% endif %}
+</div>
+
+{% endblock content %}

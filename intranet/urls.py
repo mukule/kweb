@@ -36,6 +36,7 @@ urlpatterns = [
     path("applications", include('applications.urls', namespace='applications')),
     path("facilities", include('facilities.urls', namespace='facilities')),
     path("messaging/", include('messaging.urls', namespace='messaging')),
+    path("polls/", include('polls.urls', namespace='polls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

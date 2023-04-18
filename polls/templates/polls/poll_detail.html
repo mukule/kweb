@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-6">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Opinion Polls</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    
+     <div class="container">
+        <h1>{{ poll.question }}</h1>
+        <div class="container">
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group mt-3">
+                <label>{{ form.choice.label }}</label>
+                   <div class="card">
+                    {{ form.choice }}
+                   </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Vote</button>
+                </div>
+            </form>
+        </div>
+      
+     </div>
+      
+      {% if has_voted %}
+        <p>You have already voted.</p>
+      {% endif %}
+  
+    
+</div>
+
+{% endblock content %}
