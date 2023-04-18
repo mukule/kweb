@@ -22,7 +22,8 @@
         <ul class="list-group">
             {% for poll in latest_poll_list %}
             <div class="card mb-2">
-                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="">
+                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="{% url 'polls:poll_detail' pk=poll.pk %}
+                    ">
                     {{ poll.question }}</a> published on {{ poll.pub_date|date:'M d, Y' }} || Ends on {{ poll.end_date|date:'M d, Y' }}</li>
                 </div>
             {% endfor %}

@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.forms import PasswordResetForm
 
 
 
@@ -85,3 +87,14 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'image', 'email', 'job_function', 'location', 'phone', 'contact_manager', 'mood', 'linkedin', 'facebook', 'twitter']
+
+class SetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['new_password1', 'new_password2']
+
+class PasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+    

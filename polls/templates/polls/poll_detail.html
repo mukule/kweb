@@ -18,29 +18,28 @@
 
 <div class="content">
     
-     <div class="container">
-        <h1>{{ poll.question }}</h1>
-        <div class="container">
-            <form method="post" action="">
-                {% csrf_token %}
-                <div class="form-group mt-3">
-                <label>{{ form.choice.label }}</label>
-                   <div class="card">
-                    {{ form.choice }}
-                   </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">Vote</button>
-                </div>
-            </form>
+    <h1 class ="text-center mb-3">{{ poll.question }}</h1>
+     
+    {% if error_message %}
+    <p class ="alert alert-danger">
+        <strong>{{ error_message }}</strong>
+    </p>
+     
+    {% endif %}
+     
+    <form action ="{% url 'polls:vote' poll.id %}" method ="post">
+        {% csrf_token %}
+        {% for choice in poll.choice_set.all %}
+        <div class ="form-check">
+            <input type ="radio" name ="choice" class ="form-check-input" id ="choice{{ forloop.counter }}"
+                value ="{{ choice.id }}" />
+            <label for ="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
         </div>
-      
-     </div>
-      
-      {% if has_voted %}
-        <p>You have already voted.</p>
-      {% endif %}
-  
+        {% endfor %}
+        <input type ="submit" value ="Vote" class ="btn btn-success mt-4" />
+        <a href="{% url 'polls:results' poll.pk %}" class="btn btn-success mt-4">Results</a>
+    </form>
+    
     
 </div>
 
