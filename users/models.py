@@ -13,13 +13,13 @@ class CustomUser(AbstractUser):
 
     email = models.EmailField(unique=True)
     status = models.CharField(max_length=100, choices=STATUS, default='regular')
-    job_function = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
-    contact_manager = models.CharField(max_length=100)
-    linkedin = models.CharField(max_length=100)
-    facebook = models.CharField(max_length=100)
-    twitter = models.CharField(max_length=100)
+    job_function = models.CharField(max_length=100, blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, null=True)
+    contact_manager = models.CharField(max_length=100, blank=True, null=True)
+    linkedin = models.CharField(max_length=100, blank=True, null=True)
+    facebook = models.CharField(max_length=100, blank=True, null=True)
+    twitter = models.CharField(max_length=100, blank=True, null=True)
     mood = models.CharField(max_length=600, default='', blank=True)
 
     def __str__(self):

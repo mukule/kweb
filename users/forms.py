@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import UserChangeForm
+
 
 
 
@@ -96,5 +98,17 @@ class SetPasswordForm(SetPasswordForm):
 class PasswordResetForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+class CustomUserChangeForm(UserChangeForm):
+    password1 = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput,
+        required=False,
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = '__all__'
+
 
     
