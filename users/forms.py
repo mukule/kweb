@@ -65,7 +65,7 @@ class UserLoginForm(AuthenticationForm):
 
     username = forms.CharField(
         label='username',
-        widget=forms.TextInput(attrs={'placeholder':'Username or Email', 'class':'form-control'})
+        widget=forms.TextInput(attrs={'placeholder':'Staff Number', 'class':'form-control'})
     )
 
     password = forms.CharField(
