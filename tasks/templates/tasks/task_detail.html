@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <!-- <div class="col-sm-6">
                 <div class="page-header float-right">
                     <div class="page-title">
                         <form method="post" action="{% url 'tasks:task_status_update' pk=object.pk %}" class="form-inline">
@@ -27,7 +27,7 @@
                           
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -35,9 +35,14 @@
 <div class="content">
     <div class="col-lg-12">
         <div class="card text-center">
-           <div class="card-header">
-            <strong>{{ task.name }}</strong>
-           </div>
+            <div class="card-header">
+                {% if task.document %}
+                <iframe src="{{ task.document.url }}" width="100%" height="600"></iframe>
+            {% else %}
+                <p>This task has no file document associated with it</p>
+            {% endif %}
+            
+            </div>
            <div class="card-body">
             <p>{{ task.description }}</p>
            </div>
@@ -58,16 +63,36 @@
                     <p>Assignment due date: {{ task.due_date }}</p>
                   </div>
                 </div>
-                <div class="alert alert-primary" role="alert">
+                <!-- <div class="alert alert-primary" role="alert">
                     {{ due_message }}
                   </div>
-              </div>
+              </div> -->
 
            </div>
         </div>
     </div><!-- /# column -->
+    {% if not assignment.accepted and not assignment.rejection_reason %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center"><strong>Do you accept or reject the Task ?</strong></h5>
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'tasks:accept_task' task.pk %}" class="btn btn-success btn-block">Accept</a>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'tasks:reject_task' task.pk %}" class="btn btn-danger btn-block">Reject</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
 
-
+    
+    
 </div>
 
 {% endblock content %}

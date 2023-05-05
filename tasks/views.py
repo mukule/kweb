@@ -3,9 +3,18 @@ from .models import Task, Assignment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from notifications.models import Notification
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import TaskUpdateForm
+from .forms import TaskUpdateForm, AssignmentAcceptForm, AssignmentRejectForm
 from django.contrib.auth.decorators import login_required
 from datetime import date
+import os
+from django.urls import reverse_lazy
+from django.conf import settings
+from django.templatetags.static import static
+from django.http import HttpResponse
+import requests
+from django.views.generic import View
+from django.contrib import messages
+
 
 
 
@@ -32,14 +41,26 @@ class TaskListView(LoginRequiredMixin, ListView):
    
 
 
+
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = TaskUpdateForm(instance=self.object)
-        
+
+        # Check if the current user has an assignment for the task
+        assignment = self.object.assignments.filter(assigned_to=self.request.user).first()
+
+        if not assignment:
+            # If the user doesn't have an assignment, add the accept/reject forms to the context
+            context['accept_form'] = AssignmentAcceptForm()
+            context['reject_form'] = AssignmentRejectForm()
+        else:
+            # If the user has an assignment, remove the accept/reject forms from the context
+            context.pop('accept_form', None)
+            context.pop('reject_form', None)
+
         # Calculate number of days before due date
         today = date.today()
         due_date = self.object.due_date
@@ -52,8 +73,46 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             context['due_message'] = "This task is past due!"
         else:
             context['due_message'] = f"This task is due in {days_before_due} days."
-        
+
+        # Check if the task has a document attached
+        pdf_url = self.object.document.url if self.object.document else None
+        if pdf_url and os.path.exists(pdf_url):
+            # Add the PDF URL to the context
+            context['pdf_url'] = pdf_url
+
         return context
+
+def accept_task(request, pk):
+    task = Task.objects.get(pk=pk)
+    assignment = task.assignments.filter(assigned_to=request.user).first()
+    form = AssignmentAcceptForm(request.POST or None)
+    if form.is_valid():
+        additional_details = form.cleaned_data.get('additional_details')
+        assignment.accepted = True
+        assignment.additional_details = additional_details
+        assignment.save()
+        messages.success(request, "Task accepted successfully!")
+        return redirect('tasks:task_report', pk=pk)
+    context = {'form': form, 'task': task}
+    return render(request, 'tasks/accept_task.html', context)
+
+def task_report(request, pk):
+    return render(request, 'tasks/task_report.html', {'pk': pk})
+
+
+def reject_task(request, pk):
+    task = Task.objects.get(pk=pk)
+    form = AssignmentRejectForm(request.POST or None)
+    if form.is_valid():
+        rejection_reason = form.cleaned_data.get('rejection_reason')
+        task.rejected = True
+        task.rejection_reason = rejection_reason
+        task.save()
+        messages.success(request, "Task rejected successfully!")
+        return redirect('task_detail', pk=pk)
+    context = {'form': form}
+    return render(request, 'tasks/reject_task.html', context)
+
 
 
 @login_required

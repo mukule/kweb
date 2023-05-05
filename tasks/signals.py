@@ -8,6 +8,6 @@ User = get_user_model()
 
 @receiver(post_save, sender=Assignment)
 def notify_assigned_user(sender, instance, created, **kwargs):
-    if created and not instance.completed and isinstance(instance.assigned_to, User):
+    if created and instance.task.status == 'P' and isinstance(instance.assigned_to, User):
         message = f"You have been assigned a new task: {instance.task.name}"
         Notification.objects.create(user=instance.assigned_to, message=message, task_id=instance.task.id)
