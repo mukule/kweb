@@ -66,14 +66,14 @@
                 <!-- <div class="alert alert-primary" role="alert">
                     {{ due_message }}
                   </div>
-              </div> -->
+              </div>-->
 
            </div>
         </div>
     </div><!-- /# column -->
-    {% if not assignment.accepted and not assignment.rejection_reason %}
+    {% if not is_accepted_or_rejected %}
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-center"><strong>Do you accept or reject the Task ?</strong></h5>
@@ -83,6 +83,9 @@
                         </div>
                         <div class="col">
                             <a href="{% url 'tasks:reject_task' task.pk %}" class="btn btn-danger btn-block">Reject</a>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'tasks:task_report' pk=task.pk %}" class="btn btn-success btn-block">Task progress</a>
                         </div>
                     </div>
                 </div>

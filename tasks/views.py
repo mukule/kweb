@@ -42,6 +42,8 @@ class TaskListView(LoginRequiredMixin, ListView):
 
 
 
+
+
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
@@ -80,11 +82,33 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             # Add the PDF URL to the context
             context['pdf_url'] = pdf_url
 
+        # Update the notification as read
+        user = self.request.user
+        task_id = self.kwargs['pk']
+        try:
+            notification = Notification.objects.get(user=user, task_id=task_id, read=False)
+            notification.read = True
+            notification.save()
+        except Notification.DoesNotExist:
+            pass
+
         return context
+
+
 
 def accept_task(request, pk):
     task = Task.objects.get(pk=pk)
     assignment = task.assignments.filter(assigned_to=request.user).first()
+
+    if assignment and assignment.accepted:
+        # If the user has already accepted the assignment, redirect to task detail page
+        messages.info(request, "You have already accepted this task!")
+        return redirect('tasks:task_detail', pk=pk)
+    elif assignment and assignment.rejection_reason:
+        # If the user has already rejected the assignment, redirect to task detail page
+        messages.info(request, "You have already rejected this task!")
+        return redirect('tasks:task_detail', pk=pk)
+
     form = AssignmentAcceptForm(request.POST or None)
     if form.is_valid():
         additional_details = form.cleaned_data.get('additional_details')
@@ -93,25 +117,57 @@ def accept_task(request, pk):
         assignment.save()
         messages.success(request, "Task accepted successfully!")
         return redirect('tasks:task_report', pk=pk)
+
     context = {'form': form, 'task': task}
     return render(request, 'tasks/accept_task.html', context)
 
-def task_report(request, pk):
-    return render(request, 'tasks/task_report.html', {'pk': pk})
-
-
 def reject_task(request, pk):
     task = Task.objects.get(pk=pk)
+    assignment = task.assignments.filter(assigned_to=request.user).first()
+
+    if assignment and assignment.rejection_reason:
+        # If the user has already rejected the assignment, redirect to task detail page
+        messages.info(request, "You have already rejected this task!")
+        return redirect('tasks:task_detail', pk=pk)
+    elif assignment and assignment.accepted:
+        # If the user has already accepted the assignment, redirect to task detail page
+        messages.info(request, "You have already accepted this task!")
+        return redirect('tasks:task_detail', pk=pk)
+
     form = AssignmentRejectForm(request.POST or None)
     if form.is_valid():
         rejection_reason = form.cleaned_data.get('rejection_reason')
-        task.rejected = True
-        task.rejection_reason = rejection_reason
-        task.save()
+        assignment.rejected = True
+        assignment.rejection_reason = rejection_reason
+        assignment.save()
         messages.success(request, "Task rejected successfully!")
-        return redirect('task_detail', pk=pk)
-    context = {'form': form}
+        return redirect('tasks:task_detail', pk=pk)
+
+    context = {'form': form, 'task':task}
     return render(request, 'tasks/reject_task.html', context)
+
+def task_report(request, pk):
+    assignment = Assignment.objects.filter(task__pk=pk, assigned_to=request.user).first()
+    if not assignment:
+        messages.error(request, "You have not been assigned this task!")
+        return redirect('tasks:task_detail', pk=pk)
+    elif not assignment.accepted and not assignment.rejection_reason:
+        messages.info(request, "You have not accepted or rejected this task yet!")
+        return redirect('tasks:task_detail', pk=pk)
+    elif assignment.rejection_reason:
+        messages.error(request, "You rejected the assignment!")
+        return redirect('tasks:task_detail', pk=pk)
+
+    task = assignment.task
+    today = date.today()
+
+    if task.due_date < today:
+        messages.error(request, "The due date for this task has passed!")
+        return redirect('tasks:task_detail', pk=pk)
+
+    milestones = task.milestones.all()
+
+    return render(request, 'tasks/task_report.html', {'pk': pk, 'task': task, 'milestones': milestones})
 
 
 

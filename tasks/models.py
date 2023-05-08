@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 
+
 class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -18,11 +19,20 @@ class Task(models.Model):
     ]
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     document = models.FileField(upload_to='task_documents', blank=True, null=True)
-    
 
     def __str__(self):
         return self.name
-    
+
+
+class Milestone(models.Model):
+    task = models.ForeignKey(Task, related_name='milestones', on_delete=models.CASCADE, default=None)
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    due_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+
 
 class Assignment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
@@ -47,7 +57,6 @@ class Assignment(models.Model):
     def mark_complete(self):
         self.task.status = 'C'
         self.task.save()
-
 
 
 class ProgressReport(models.Model):
